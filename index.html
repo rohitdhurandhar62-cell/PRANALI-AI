@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pranali AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #050b14;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 38px;
+            margin: 0 0 10px;
+        }
+
+        p {
+            color: #9bb7d4;
+            font-size: 18px;
+        }
+
+        .orb {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 3px solid #00aaff;
+            box-shadow: 0 0 25px #00aaff;
+            margin: 30px;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 15px #00aaff;
+            }
+            to {
+                box-shadow: 0 0 45px #00aaff;
+            }
+        }
+
+        input {
+            width: min(90vw, 400px);
+            padding: 15px;
+            border-radius: 25px;
+            border: 1px solid #00aaff;
+            background: #101b2a;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        button {
+            background: #008cff;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 17px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #00aaff;
+        }
+
+        #response {
+            margin-top: 20px;
+            color: #9bb7d4;
+            max-width: 500px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>PRANALI AI</h1>
+
+    <p>आपकी Personal AI Assistant</p>
+
+    <div class="orb"></div>
+
+    <button onclick="startListening()">🎙️ बात करें</button>
+
+    <div>
+        <input
+            type="text"
+            id="message"
+            placeholder="Pranali से कुछ पूछें..."
+        >
+
+        <br>
+
+        <button onclick="sendMessage()">भेजें</button>
+    </div>
+
+    <div id="response"></div>
+
+
+    <script>
+
+        function startListening() {
+
+            const SpeechRecognition =
+                window.SpeechRecognition ||
+                window.webkitSpeechRecognition;
+
+            if (!SpeechRecognition) {
+                alert("इस ब्राउज़र में Voice Recognition उपलब्ध नहीं है।");
+                return;
+            }
+
+            const recognition = new SpeechRecognition();
+
+            recognition.lang = "hi-IN";
+            recognition.interimResults = false;
+
+            recognition.onstart = function () {
+                document.getElementById("response").innerText =
+                    "🎙️ Pranali सुन रही है...";
+            };
+
+            recognition.onresult = function (event) {
+
+                const text =
+                    event.results[0][0].transcript;
+
+                document.getElementById("message").value = text;
+
+                document.getElementById("response").innerText =
+                    "आपने कहा: " + text;
+            };
+
+            recognition.onerror = function () {
+
+                document.getElementById("response").innerText =
+                    "माइक्रोफ़ोन में समस्या हुई।";
+            };
+
+            recognition.start();
+        }
+
+
+        function sendMessage() {
+
+            const message =
+                document.getElementById("message").value.trim();
+
+            if (message === "") {
+
+                document.getElementById("response").innerText =
+                    "कृपया पहले अपना संदेश लिखें।";
+
+                return;
+            }
+
+            document.getElementById("response").innerText =
+                "🤖 Pranali: आपने कहा — " + message;
+        }
+
+    </script>
+
+</body>
+</html>
