@@ -176,6 +176,15 @@
         }
 
     </script>
-
+<p id="aiStatus"></p>
+<script>
+function showAIStatus(message) {
+document.getElementById("response").innerText =    document.getElementById("aiStatus").innerText = message;
+}
+function showAIStatus(message) {
+    document.getElementById("response").innerText = message;
+    document.getElementById("aiStatus").innerText = message;
+}
+</script>
 </body>
 </html>
